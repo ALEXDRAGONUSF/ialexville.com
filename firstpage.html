@@ -1,3 +1,225 @@
-<html>
-    Hello World!
-</html>
+// App.jsx
+import React, { useState } from "react";
+
+const sampleProducts = [
+  { id: 1, name: "Eco Bamboo Toothbrush", ecoTag: "A+", desc: "Sustainable bamboo handle.", price: "$5" },
+  { id: 2, name: "Reusable Water Bottle", ecoTag: "A", desc: "Keeps water cold for 24h.", price: "$15" },
+  { id: 3, name: "Solar Phone Charger", ecoTag: "A++", desc: "Portable solar charger for phones.", price: "$45" },
+  { id: 4, name: "Recycled Paper Notebook", ecoTag: "B+", desc: "Made from 100% recycled paper.", price: "$7" },
+];
+
+const sampleArticles = [
+  { id: 1, title: "10 Ways to Reduce Plastic Waste", link: "#" },
+  { id: 2, title: "How to Start Composting at Home", link: "#" },
+  { id: 3, title: "Sustainable Fashion Tips", link: "#" },
+  { id: 4, title: "The Future of Renewable Energy", link: "#" },
+];
+
+const codingTutorials = [
+  { id: 1, title: "Learn React Basics", videoUrl: "https://www.youtube.com/embed/Ke90Tje7VS0" },
+  { id: 2, title: "JavaScript Fundamentals", videoUrl: "https://www.youtube.com/embed/hdI2bqOjy3c" },
+  { id: 3, title: "Intro to Node.js", videoUrl: "https://www.youtube.com/embed/TlB_eWDSMt4" },
+];
+
+function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Login (mock)</h2>
+      <input
+        type="email"
+        placeholder="Your email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        style={{ width: "100%", padding: 8, marginBottom: 10 }}
+      />
+      <button onClick={() => onLogin(email)} disabled={!email} style={{ padding: "8px 12px" }}>
+        Login
+      </button>
+    </div>
+  );
+}
+
+function ProductList() {
+  return (
+    <div>
+      <h3>EcoTag Products</h3>
+      {sampleProducts.map(p => (
+        <div
+          key={p.id}
+          style={{
+            border: "1px solid #ccc",
+            margin: "10px 0",
+            padding: "10px",
+            borderRadius: 6,
+            backgroundColor: "#f9f9f9",
+          }}
+        >
+          <strong>{p.name}</strong> <em>EcoTag: {p.ecoTag}</em>
+          <p>{p.desc}</p>
+          <p>Price: {p.price}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Articles({ onSelectTab, activeTab }) {
+  return (
+    <div>
+      <h3>Articles & Videos</h3>
+      <div style={{ marginBottom: 10 }}>
+        <button
+          onClick={() => onSelectTab("articles")}
+          style={{
+            marginRight: 10,
+            padding: "6px 12px",
+            backgroundColor: activeTab === "articles" ? "#4CAF50" : "#eee",
+            color: activeTab === "articles" ? "#fff" : "#000",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer",
+          }}
+        >
+          Articles
+        </button>
+        <button
+          onClick={() => onSelectTab("coding")}
+          style={{
+            padding: "6px 12px",
+            backgroundColor: activeTab === "coding" ? "#4CAF50" : "#eee",
+            color: activeTab === "coding" ? "#fff" : "#000",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer",
+          }}
+        >
+          Coding Tutorials
+        </button>
+      </div>
+      {activeTab === "articles" && (
+        <ul>
+          {sampleArticles.map(a => (
+            <li key={a.id} style={{ marginBottom: 6 }}>
+              <a href={a.link} target="_blank" rel="noreferrer">
+                {a.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+      {activeTab === "coding" && (
+        <div>
+          {codingTutorials.map(video => (
+            <div key={video.id} style={{ marginBottom: 20 }}>
+              <h4>{video.title}</h4>
+              <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden" }}>
+                <iframe
+                  src={video.videoUrl}
+                  title={video.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ContactForm() {
+  return (
+    <div>
+      <h3>Contact Us</h3>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          alert("Thanks for your message!");
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Your name"
+          required
+          style={{ width: "100%", marginBottom: 8, padding: 8 }}
+        />
+        <input
+          type="email"
+          placeholder="Your email"
+          required
+          style={{ width: "100%", marginBottom: 8, padding: 8 }}
+        />
+        <textarea
+          placeholder="Your message"
+          required
+          style={{ width: "100%", marginBottom: 8, padding: 8 }}
+          rows={4}
+        />
+        <button type="submit" style={{ padding: "8px 12px" }}>
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [page, setPage] = useState("products");
+  const [articleTab, setArticleTab] = useState("articles");
+
+  if (!user)
+    return <Login onLogin={setUser} />;
+
+  return (
+    <div style={{ maxWidth: 700, margin: "auto", fontFamily: "Arial, sans-serif" }}>
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "10px 0",
+          borderBottom: "1px solid #ddd",
+        }}
+      >
+        <h1>ialexville</h1>
+        <button onClick={() => setUser(null)} style={{ padding: "6px 10px" }}>
+          Logout
+        </button>
+      </header>
+      <nav style={{ marginBottom: 20 }}>
+        <button
+          onClick={() => setPage("products")}
+          style={{ marginRight: 10, padding: "8px 12px", cursor: "pointer" }}
+        >
+          Products
+        </button>
+        <button
+          onClick={() => setPage("articles")}
+          style={{ marginRight: 10, padding: "8px 12px", cursor: "pointer" }}
+        >
+          Articles & Tutorials
+        </button>
+        <button onClick={() => setPage("contact")} style={{ padding: "8px 12px", cursor: "pointer" }}>
+          Contact
+        </button>
+      </nav>
+      <main>
+        {page === "products" && <ProductList />}
+        {page === "articles" && (
+          <Articles activeTab={articleTab} onSelectTab={setArticleTab} />
+        )}
+        {page === "contact" && <ContactForm />}
+      </main>
+    </div>
+  );
+}
